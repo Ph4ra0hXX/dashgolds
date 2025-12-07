@@ -3,8 +3,8 @@ from django.contrib import messages
 from .models import Menu
 
 
-def home(request):
-    return render(request, "home/home.html")
+def hello(request):
+    return render(request, "home/hello.html")
 
 
 def registrar_menu(request):

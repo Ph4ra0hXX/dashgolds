@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from django.http import JsonResponse
 from .models import Menu
 
 
@@ -76,3 +77,11 @@ def deletar_menu(request, id):
         messages.success(request, f"Menu '{nome_menu}' deletado com sucesso!")
 
     return redirect("registrar_menu")
+
+
+def listar_menus_json(request):
+    """API que retorna todos os menus em formato JSON"""
+    menus = Menu.objects.all().values("id", "nome", "img", "descricao", "url", "ativo")
+    return JsonResponse(
+        list(menus), safe=False, json_dumps_params={"ensure_ascii": False}
+    )

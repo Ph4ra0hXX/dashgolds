@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.http import JsonResponse
-from .models import Menu
+from .models import Menu, ConfiguracaoSistema
 
 
 def hello(request):
@@ -85,3 +85,27 @@ def listar_menus_json(request):
     return JsonResponse(
         list(menus), safe=False, json_dumps_params={"ensure_ascii": False}
     )
+
+
+def configuracao_sistema(request):
+    """Gerencia a configuração global do sistema"""
+    config, created = ConfiguracaoSistema.objects.get_or_create(id=1)
+    
+    if request.method == "POST":
+        sistema_aberto = request.POST.get("sistema_aberto") == "on"
+        config.sistema_aberto = sistema_aberto
+        config.save()
+        
+        status = "aberto" if sistema_aberto else "fechado"
+        messages.success(request, f"Sistema marcado como {status}!")
+        return redirect("configuracao_sistema")
+    
+    return render(request, "home/configuracao_sistema.html", {"config": config})
+
+
+def api_sistema_status(request):
+    """API que retorna o status do sistema em JSON"""
+    config, created = ConfiguracaoSistema.objects.get_or_create(id=1)
+    return JsonResponse({
+        "sistema_aberto": config.sistema_aberto
+    })

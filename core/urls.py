@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import hello, registrar_menu, editar_menu, deletar_menu, listar_menus_json
+from .views import hello, registrar_menu, editar_menu, deletar_menu, listar_menus_json, configuracao_sistema, api_sistema_status
 
 urlpatterns = [
     path("hello/", hello, name="hello"),
@@ -8,4 +8,6 @@ urlpatterns = [
     path("menus/", listar_menus_json, name="menus_json"),
     path("editar-menu/<int:id>/", editar_menu, name="editar_menu"),
     path("deletar-menu/<int:id>/", deletar_menu, name="deletar_menu"),
+    path("configuracao-sistema/", configuracao_sistema, name="configuracao_sistema"),
+    path("api/sistema-status/", api_sistema_status, name="api_sistema_status"),
 ]

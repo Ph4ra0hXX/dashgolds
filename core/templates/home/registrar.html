@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registrar Menu</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .header {
+        text-align: center;
+        color: white;
+        margin-bottom: 40px;
+      }
+
+      .header h1 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+      }
+
+      .content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+      }
+
+      @media (max-width: 768px) {
+        .content {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .form-card {
+        background: white;
+        border-radius: 10px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .form-card h2 {
+        color: #333;
+        margin-bottom: 20px;
+        font-size: 1.8em;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        color: #333;
+        font-weight: 600;
+        margin-bottom: 8px;
+        font-size: 0.95em;
+      }
+
+      .form-group input[type="text"],
+      .form-group textarea {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 5px;
+        font-size: 1em;
+        transition: border-color 0.3s;
+        font-family: inherit;
+      }
+
+      .form-group input[type="text"]:focus,
+      .form-group textarea:focus {
+        outline: none;
+        border-color: #667eea;
+        background-color: #f8f9ff;
+      }
+
+      .form-group textarea {
+        resize: vertical;
+        min-height: 100px;
+      }
+
+      .checkbox-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .checkbox-group input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+      }
+
+      .checkbox-group label {
+        margin: 0;
+        cursor: pointer;
+        color: #555;
+      }
+
+      .form-group button {
+        width: 100%;
+        padding: 12px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 1.1em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+
+      .form-group button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+      }
+
+      .form-group button:active {
+        transform: translateY(0);
+      }
+
+      .messages {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        max-width: 400px;
+        z-index: 1000;
+      }
+
+      .message {
+        padding: 15px 20px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        animation: slideIn 0.3s ease-out;
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateX(400px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      .message.success {
+        background-color: #4caf50;
+        color: white;
+        border-left: 4px solid #45a049;
+      }
+
+      .message.error {
+        background-color: #f44336;
+        color: white;
+        border-left: 4px solid #da190b;
+      }
+
+      @keyframes slideOut {
+        from {
+          transform: translateX(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateX(400px);
+          opacity: 0;
+        }
+      }
+
+      .message.hide {
+        animation: slideOut 0.3s ease-out forwards;
+      }
+
+      .menus-list {
+        background: white;
+        border-radius: 10px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .menus-list h2 {
+        color: #333;
+        margin-bottom: 20px;
+        font-size: 1.8em;
+      }
+
+      .menu-item {
+        background: #f8f9fa;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 5px;
+        border-left: 4px solid #667eea;
+        transition: transform 0.2s;
+      }
+
+      .menu-item:hover {
+        transform: translateX(5px);
+        background: #f0f2ff;
+      }
+
+      .menu-item h3 {
+        color: #667eea;
+        margin-bottom: 5px;
+        font-size: 1.2em;
+      }
+
+      .menu-info {
+        color: #666;
+        font-size: 0.95em;
+        margin: 5px 0;
+      }
+
+      .menu-info strong {
+        color: #333;
+      }
+
+      .menu-status {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 0.85em;
+        font-weight: 600;
+      }
+
+      .menu-status.ativo {
+        background-color: #c8e6c9;
+        color: #2e7d32;
+      }
+
+      .menu-item {
+        background: #f8f9fa;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 5px;
+        border-left: 4px solid #667eea;
+        transition: transform 0.2s;
+      }
+
+      .menu-item:hover {
+        transform: translateX(5px);
+        background: #f0f2ff;
+      }
+
+      .menu-item h3 {
+        color: #667eea;
+        margin-bottom: 5px;
+        font-size: 1.2em;
+      }
+
+      .menu-info {
+        color: #666;
+        font-size: 0.95em;
+        margin: 5px 0;
+      }
+
+      .menu-info strong {
+        color: #333;
+      }
+
+      .menu-status {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 0.85em;
+        font-weight: 600;
+      }
+
+      .menu-status.ativo {
+        background-color: #c8e6c9;
+        color: #2e7d32;
+      }
+
+      .menu-status.inativo {
+        background-color: #ffcccc;
+        color: #c62828;
+      }
+
+      .menu-actions {
+        margin-top: 12px;
+        display: flex;
+        gap: 8px;
+      }
+
+      .menu-actions a,
+      .menu-actions button {
+        padding: 6px 12px;
+        border: none;
+        border-radius: 4px;
+        font-size: 0.85em;
+        cursor: pointer;
+        text-decoration: none;
+        transition: opacity 0.2s;
+        font-weight: 600;
+      }
+
+      .btn-edit {
+        background-color: #2196f3;
+        color: white;
+      }
+
+      .btn-edit:hover {
+        opacity: 0.8;
+      }
+
+      .btn-delete {
+        background-color: #f44336;
+        color: white;
+      }
+
+      .btn-delete:hover {
+        opacity: 0.8;
+      }
+
+      .cancel-edit-btn {
+        background: linear-gradient(135deg, #ef5350 0%, #e53935 100%);
+        color: white;
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 5px;
+        font-size: 1.1em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
+      }
+
+      .cancel-edit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(239, 83, 80, 0.4);
+      }
+
+      .cancel-edit-btn:active {
+        transform: translateY(0);
+      }
+
+      .edit-badge {
+        display: inline-block;
+        background-color: #ff9800;
+        color: white;
+        padding: 4px 8px;
+        border-radius: 3px;
+        font-size: 0.8em;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+
+      .empty-message {
+        text-align: center;
+        padding: 40px 20px;
+        color: #999;
+        font-size: 1.1em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>📋 Gerenciador de Menu</h1>
+        <p>Registre e gerencie os itens do seu menu</p>
+      </div>
+
+      <!-- Mensagens -->
+      {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+        <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+          {{ message }}
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <div class="content">
+        <!-- Formulário de Registro/Edição -->
+        <div class="form-card">
+          {% if menu_edit %}
+          <div class="edit-badge">✏️ EDITANDO MENU</div>
+          <h2>Editar Menu</h2>
+          {% else %}
+          <h2>Novo Menu</h2>
+          {% endif %}
+          <form method="POST">
+            {% csrf_token %}
+
+            <div class="form-group">
+              <label for="nome">Nome *</label>
+              <input
+                type="text"
+                id="nome"
+                name="nome"
+                placeholder="Ex: Dashboard"
+                value="{% if menu_edit %}{{ menu_edit.nome }}{% endif %}"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="url">URL *</label>
+              <input
+                type="text"
+                id="url"
+                name="url"
+                placeholder="Ex: /dashboard"
+                value="{% if menu_edit %}{{ menu_edit.url }}{% endif %}"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="img">Ícone/Imagem</label>
+              <input
+                type="text"
+                id="img"
+                name="img"
+                placeholder="Ex: fas fa-chart-line ou URL da imagem"
+                value="{% if menu_edit %}{{ menu_edit.img }}{% endif %}"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="descricao">Descrição</label>
+              <textarea
+                id="descricao"
+                name="descricao"
+                placeholder="Descreva o propósito deste menu"
+              >
+{% if menu_edit %}{{ menu_edit.descricao }}{% endif %}</textarea
+              >
+            </div>
+
+            <div class="form-group checkbox-group">
+              <input
+                type="checkbox"
+                id="ativo"
+                name="ativo"
+                {%
+                if
+                not
+                menu_edit
+                or
+                menu_edit.ativo
+                %}checked{%
+                endif
+                %}
+              />
+              <label for="ativo">Menu Ativo</label>
+            </div>
+
+            <div class="form-group">
+              {% if menu_edit %}
+              <button type="submit">💾 Atualizar Menu</button>
+              {% else %}
+              <button type="submit">✅ Registrar Menu</button>
+              {% endif %}
+            </div>
+
+            {% if menu_edit %}
+            <div class="form-group">
+              <a href="{% url 'registrar_menu' %}" class="cancel-edit-btn"
+                >❌ Cancelar Edição</a
+              >
+            </div>
+            {% endif %}
+          </form>
+        </div>
+
+        <!-- Lista de Menus Registrados -->
+        <div class="menus-list">
+          <h2>Menus Registrados</h2>
+          {% if menus %} {% for menu in menus %}
+          <div class="menu-item">
+            <h3>{{ menu.nome }}</h3>
+            <div class="menu-info"><strong>URL:</strong> {{ menu.url }}</div>
+            {% if menu.img %}
+            <div class="menu-info"><strong>Ícone:</strong> {{ menu.img }}</div>
+            {% endif %} {% if menu.descricao %}
+            <div class="menu-info">
+              <strong>Descrição:</strong> {{ menu.descricao }}
+            </div>
+            {% endif %}
+            <span
+              class="menu-status {% if menu.ativo %}ativo{% else %}inativo{% endif %}"
+            >
+              {% if menu.ativo %}✓ Ativo{% else %}✗ Inativo{% endif %}
+            </span>
+            <div class="menu-actions">
+              <a href="{% url 'editar_menu' menu.id %}" class="btn-edit"
+                >✏️ Editar</a
+              >
+              <form
+                method="POST"
+                action="{% url 'deletar_menu' menu.id %}"
+                style="display: inline; margin: 0"
+              >
+                {% csrf_token %}
+                <button
+                  type="submit"
+                  class="btn-delete"
+                  onclick="return confirm('Tem certeza que deseja deletar este menu?')"
+                >
+                  🗑️ Deletar
+                </button>
+              </form>
+            </div>
+          </div>
+          {% endfor %} {% else %}
+          <div class="empty-message">
+            Nenhum menu registrado ainda.<br />
+            Comece adicionando um novo menu ao lado!
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    // Fazer os toasts desaparecerem automaticamente após 4 segundos
+    document.addEventListener("DOMContentLoaded", function () {
+      const messages = document.querySelectorAll(".message");
+      messages.forEach(function (message) {
+        setTimeout(function () {
+          message.classList.add("hide");
+          setTimeout(function () {
+            message.remove();
+          }, 300);
+        }, 4000);
+      });
+    });
+  </script>
+</html>

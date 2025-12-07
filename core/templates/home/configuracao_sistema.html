@@ -279,7 +279,11 @@
       <div class="navbar-content">
         <ul class="navbar-links">
           <li><a href="{% url 'registrar_menu' %}">Menus</a></li>
-          <li><a href="{% url 'configuracao_sistema' %}" class="active">Configurações</a></li>
+          <li>
+            <a href="{% url 'configuracao_sistema' %}" class="active"
+              >Configurações</a
+            >
+          </li>
         </ul>
       </div>
     </nav>
@@ -308,18 +312,12 @@
           <div
             class="status-badge {% if config.sistema_aberto %}aberto{% else %}fechado{% endif %}"
           >
-            {% if config.sistema_aberto %}
-            ✓ SISTEMA ABERTO
-            {% else %}
-            ✗ SISTEMA FECHADO
-            {% endif %}
+            {% if config.sistema_aberto %} ✓ SISTEMA ABERTO {% else %} ✗ SISTEMA
+            FECHADO {% endif %}
           </div>
           <div class="status-text">
-            {% if config.sistema_aberto %}
-            O sistema está disponível para uso
-            {% else %}
-            O sistema está indisponível no momento
-            {% endif %}
+            {% if config.sistema_aberto %} O sistema está disponível para uso {%
+            else %} O sistema está indisponível no momento {% endif %}
           </div>
         </div>
 
@@ -331,7 +329,12 @@
               type="checkbox"
               id="sistema_aberto"
               name="sistema_aberto"
-              {% if config.sistema_aberto %}checked{% endif %}
+              {%
+              if
+              config.sistema_aberto
+              %}checked{%
+              endif
+              %}
             />
             <label for="sistema_aberto">Sistema Aberto</label>
           </div>

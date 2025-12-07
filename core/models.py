@@ -3,10 +3,10 @@ from django.db import models
 
 class ConfiguracaoSistema(models.Model):
     sistema_aberto = models.BooleanField(default=False)
-    
+
     def __str__(self):
         return f"Sistema {'Aberto' if self.sistema_aberto else 'Fechado'}"
-    
+
     class Meta:
         verbose_name = "Configuração do Sistema"
         verbose_name_plural = "Configurações do Sistema"

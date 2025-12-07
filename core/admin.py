@@ -12,11 +12,11 @@ class MenuAdmin(admin.ModelAdmin):
 @admin.register(ConfiguracaoSistema)
 class ConfiguracaoSistemaAdmin(admin.ModelAdmin):
     list_display = ("sistema_aberto",)
-    
+
     def has_add_permission(self, request):
         # Limitar a apenas uma configuração
         return not ConfiguracaoSistema.objects.exists()
-    
+
     def has_delete_permission(self, request, obj=None):
         # Não permitir deletar a configuração
         return False

@@ -27,6 +27,17 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
+# CSRF Configuration
+CSRF_TRUSTED_ORIGINS = [
+    "https://dashgolds.onrender.com",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+]
+
+CSRF_COOKIE_SECURE = False  # Set to True in production with HTTPS
+CSRF_COOKIE_HTTPONLY = False
+CSRF_COOKIE_SAMESITE = "Lax"
+
 
 # Application definition
 

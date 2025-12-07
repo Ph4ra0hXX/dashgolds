@@ -92,7 +92,8 @@ def configuracao_sistema(request):
     config, created = ConfiguracaoSistema.objects.get_or_create(id=1)
 
     if request.method == "POST":
-        sistema_aberto = request.POST.get("sistema_aberto") == "on"
+        # Se o checkbox for enviado, seu valor será "on", caso contrário não vem nada
+        sistema_aberto = "sistema_aberto" in request.POST
         config.sistema_aberto = sistema_aberto
         config.save()
 
